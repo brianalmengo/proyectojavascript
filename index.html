@@ -1,7 +1,28 @@
 <html>
 <head>Hello, World</head>
+
+<script type="text/javascript">
+	function ciclo(hasta){
+		var suma=0;
+		var x = 1
+		suma=(hasta+1)*(hasta/2)
+		console.log(suma);
+	};
+	
+	function calcular(){
+		var numero = document.getElementById("numero").value;
+		ciclo(numero);
+	};
+
+	var nombre = "Brian Almengo"
+	ciclo(1000000000000);
+	
+	
+</script>
 <body>
-Hola Mundo
-Pruebas
+<input id="numero"></input>
+<button id='Click' onclick="calcular()">Calcular</button>
+
+
 </body>
 </html>
