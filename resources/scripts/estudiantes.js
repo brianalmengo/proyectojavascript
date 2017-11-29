@@ -63,9 +63,9 @@ function agregarFila2(estudiante){
 
 function agregarFila(estudiante){
 	var nuevoId= Id+1;
-	var tabla = document.getElementById("datos");
+	var tabla = document.getElementById("datosTabla");
 	var fila = document.createElement("tr");
-	var columnaId = document.createElement("td");
+	var columnaId = document.createElement("th");
 	var columnaNombre = document.createElement("td");
 	var columnaMatricula = document.createElement("td");
 	var columnaIdentificacion = document.createElement("td");
@@ -83,6 +83,8 @@ function agregarFila(estudiante){
 	Id+=1;
 	
 	columnaId.style.width = "5%";
+	columnaId.style.scope = "row";
+	
 	columnaNombre.style.width = "20%";
 	columnaMatricula.style.width = "15%";
 	columnaIdentificacion.style.width = "20%";
@@ -109,11 +111,11 @@ function agregarFila(estudiante){
 function almacenar(estudiante){
 	//console.log(estudiante.nombre+"-"+estudiante.matricula+"-"+estudiante.identificacion+"-"+estudiante.telefono+"-"+estudiante.email);
 	console.log(estudiante);
-	//agregarFila(estudiante);
-	agregarFila2(estudiante);
+	agregarFila(estudiante);
+	//agregarFila2(estudiante);
 };
 
-function registrar(){
+function registrar(e){
 	//var id = document.getElementById("nombre");
 	var nombre= document.getElementById("nombre").value;
 	var matricula= document.getElementById("matricula").value;
@@ -133,6 +135,7 @@ function registrar(){
 	limpiar();
 	//estudiateRegistrar.almacenar(estudiateRegistrar);
 	//Estudiantes2.almacenar(estudiateRegistrar);
+	 
 };
 
 function limpiar(){
@@ -142,7 +145,10 @@ function limpiar(){
 	document.getElementById("identificacion").value="";
 	document.getElementById("telefono").value="";
 	document.getElementById("email").value="";	
-	//txtNombre.focus();
+	txtNombre.focus();
 };
 
-
+document.addEventListener("DOMContentLoaded", function(){
+	var txtNombre = document.getElementById("nombre");
+	txtNombre.focus();
+});
