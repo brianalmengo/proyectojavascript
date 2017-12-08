@@ -1,0 +1,160 @@
+<html>
+<head>
+<title>POSTMAN</title>
+<script src="resources/scripts/jquery-3.2.1.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/propios.css">
+
+<script>
+
+
+$(document).ready(function(){
+	$("#buscarPost").click(function(){
+		var id = $("#idPost").val();
+		buscarPost(id);
+	});
+	
+	$("#agregarPost").click(function(){
+		var id = $("#idPost").val();
+		agregarPost(id);
+	});
+	
+	$("#starPost").click(function(){
+		var claseActual = $("#starPost").attr("class");
+		
+		if(claseActual=="noseleccionado"){
+			$("#starPost").attr("class","seleccionado");
+		}else{
+			$("#starPost").attr("class","noseleccionado");
+		}		
+		agregaFavorita();
+	});
+
+});
+
+function agregaFavorita(){
+	
+};
+
+var Post = function(){
+	var self = this;
+	self.userId;
+	self.id;
+	self.title;
+	self.body;
+};
+
+function buscarPost(idPost){
+	$.ajax({
+	url: root + '/posts/'+idPost,
+	method: 'GET'
+	}).then(function(data) {
+		$("#titulo").text(data.title);
+		$("#body").text(data.body);
+		console.log(data);
+		console.log(data.userId);
+		$("#post").css({"border-top":"1px solid #337ab7", "border-bottom":"1px solid #337ab7"});
+		
+		$.ajax({
+		url: root + '/users/'+data.userId,
+		method: 'GET'
+		}).then(function(data) {
+			$("#userName").text("Publicador: "+data.email+ " ("+data.name+")");			
+		});
+	});
+	
+	
+};
+
+function agregarPost(idPost){
+	var postNuevo = " <div id=\"post"+idPost+"\" class=\".container-post negro\"> "+
+		" <h1 id=\"titulo"+idPost+"\"></h1> "+
+		" <p id=\"body"+idPost+"\"></p> "+ 
+		" <p style=\"float:right; padding-right: 20px;\" id=\"userName"+idPost+"\"></p> "+
+		" </div> ";
+
+
+	$.ajax({
+	url: root + '/posts/'+idPost,
+	method: 'GET'
+	}).then(function(data) {
+		$("#publicaciones").append("<br><br>");
+		$("#publicaciones").append(postNuevo);
+		$("#titulo"+idPost).text(data.title);
+		$("#body"+idPost).text(data.body);
+		$("#postNumber"+idPost).text("Post #:"+data.id);
+		$("#post"+idPost).css({"border-top":"1px solid #337ab7", "border-bottom":"1px solid #337ab7"});
+		//
+		console.log(data);
+		
+		$.ajax({
+		url: root + '/users/'+data.userId,
+		method: 'GET'
+		}).then(function(data) {
+			$("#userName"+idPost).text("Publicador: "+data.name);			
+		});
+	});
+		
+};
+
+var root = 'https://jsonplaceholder.typicode.com';
+
+$.ajax({
+  url: root + '/posts/1',
+  method: 'GET'
+}).then(function(data) {
+  console.log(data);
+  console.log(data.title);
+});
+
+</script>
+
+</head>
+
+<body>
+<center id="contenido">
+
+<h1><b>ITLA</b>
+<br>PRUEBAS DE POSTMAN
+</h1>
+<hr>
+
+
+<form class="form-horizontal"  style="display:inline;">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Id Post</label>
+		<div class="col-sm-6">
+			<input class="form-control" id="idPost" type="text" placeholder="Numero del Post"></input>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<button type="button" id="buscarPost" class="btn btn-primary" ><b>Buscar Post </b></button>		
+		<button type="button" id="agregarPost" class="btn btn-primary" ><b>Agregar Post </b></button>	
+	</div>
+</form>
+
+<hr>
+
+<div id="publicaciones">
+
+<div id="post" class=".container-post negro">
+<div id="header">
+	<div class="derecha">
+		
+		<input id="starPost" type="button" class="noseleccionado"/>
+		
+	</div>
+</div>
+
+<h1 id="titulo"></h1>
+<p id="body"></p>
+<p style="float:right; padding-right: 20px;" id="userName"></p>
+</div>
+
+</div>
+
+</center>
+</body>
+</html>

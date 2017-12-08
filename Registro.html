@@ -2,9 +2,45 @@
 <head>
 <title>Estudiantes</title>
 <script src="resources/scripts/estudiantes.js"></script>
+<script src="resources/scripts/jquery-3.2.1.min.js"></script>
 
 <link rel="stylesheet" href="resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/css/propios.css">
+
+<script>
+
+
+$(document).ready(function(){
+	//alert("Test2");
+	cargarEstudiantes();
+	$("#nombre").focus();
+
+	$("#Registrar").click(function(){
+		//alert("TEST");
+		var nombre= $("#nombre").val();
+		var matricula= $("#matricula").val();
+		var identificacion= $("#identificacion").val();
+		var telefono= $("#telefono").val();
+		var email= $("#email").val();
+		
+		var estudiateRegistrar = new Estudiantes2();
+		estudiateRegistrar.nombre = nombre;
+		estudiateRegistrar.matricula = matricula;
+		estudiateRegistrar.identificacion = identificacion;
+		estudiateRegistrar.telefono= telefono;
+		estudiateRegistrar.email= email;
+		
+		
+		almacenar(estudiateRegistrar);
+		limpiar();
+	});
+	
+	$("#Eliminar").click(function(){
+		eliminarEstudiante();
+	});
+});
+
+</script>
 
 </head>
 
@@ -53,7 +89,8 @@
 	</div>
 	
 	<div class="form-group">
-		<button type="button" id="Registrar" class="btn btn-primary" onclick="registrar();"><b>Registrar Estudiante </b></button>
+		<button type="button" id="Registrar" class="btn btn-primary" ><b>Registrar Estudiante </b></button>
+		<button type="button" id="Eliminar" class="btn btn-danger" ><b>Eliminar Estudiante </b></button>
 	</div>
 </form>
 
@@ -61,7 +98,8 @@
 
 <table id="datos" class="table table-striped">
 	<thead>
-		<tr>
+		<tr>	
+			<th scope="col"></th>
 			<th scope="col">ID</th>
 			<th scope="col">NOMBRE</th>
 			<th scope="col">MATRICULA</th>

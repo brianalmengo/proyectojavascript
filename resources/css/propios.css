@@ -9,3 +9,44 @@ border-top: 2px solid #337ab7;
 }
 
 td{color: #000;}
+
+.derecha{
+	float:right;
+	padding-right:20px;
+}
+
+.noseleccionado{
+	
+	background:url("./../img/staron.png");
+	background-repeat: no-repeat;
+	width:24px;
+	height:24px;
+	border: 0;
+}
+
+
+.noseleccionado{
+    background:url(./../img/staroff.png) no-repeat;
+    cursor:pointer;
+    border:none;
+    width:100px;
+    height:100px;
+}
+
+.noseleccionado:hover  /* use Dot here */
+{   
+    background:url(./../img/staron.png) no-repeat;
+}
+
+.seleccionado{
+    background:url(./../img/staron.png) no-repeat;
+    cursor:pointer;
+    border:none;
+    width:100px;
+    height:100px;
+}
+
+.seleccionado:hover  /* use Dot here */
+{   
+    background:url(./../img/staroff.png) no-repeat;
+}
