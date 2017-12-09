@@ -65,7 +65,7 @@ function seleccionarFavorita(){
 	var id = obj.id;
 	var claseActual = "noseleccionado" // $("#"+text).attr("class");
 	var element =document.getElementById(id);
-	console.log(element);
+	
 	var contieneClase = element.classList.contains(claseActual);
 	id = id.split("starPost")[1];
 	
@@ -148,7 +148,7 @@ function obtenerPosts(){
 		
 			$.each(lista, function(i, data){
 				var idPost = data.id;
-				console.log(idPost);			
+				
 			
 				var postNuevo = " <div id=\"post"+idPost+"\" class=\"container-post negro leftText\"> "+
 					" <div class=\"headerPost\"><input id=\"starPost"+idPost+"\" onclick=\"seleccionarFavorita()\" type=\"button\" class=\"noseleccionado\ headeritem favoritos\"/><a id=\"postlink"+idPost+"\" href=\"#\" onclick=\"seleccionaPost()\"><h2 class=\"headeritem\" id=\"titulo"+idPost+"\"></h2></a></div> "+

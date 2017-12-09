@@ -33,11 +33,27 @@ function obtenerDatos(){
 		$("#userId").text(data.userId);
 		
 		$.ajax({
-		url: root + '/users/'+data.userId,
-		method: 'GET'
+			url: root + '/users/'+data.userId,
+			method: 'GET'
 		}).then(function(dataUser) {
 			$("#nombre").text(dataUser.name);
 			$("#telefono").text(dataUser.phone);
+		});
+
+		$.ajax({
+			url: root + '/comments/',
+			method: 'GET'
+		}).then(function(comentarios) {
+			
+			var comentariosPost = $.grep(comentarios, function(obj){
+				return obj.postId===data.id;
+			});
+			$.each(comentariosPost, function(i, comentario){
+				var comentarioNuevo = " <h4 class=\"itemtext\"><p>"+comentario.name+" ("+comentario.email+")"+"</p></h4> "+
+					" <h4 class=\"itemtext\"><p></p><p id=\"comentario\" class=\"negro itemvalue\">"+comentario.body+"</p></h4><hr>";
+				
+				$("#comentarios").append(comentarioNuevo);
+			});
 		});		
 		
 	});
@@ -69,6 +85,11 @@ var root = 'https://jsonplaceholder.typicode.com';
 		<h4 class="itemtext"><p>ID</p><p id="userId" class="negro itemvalue"></p></h4>
 		<h4 class="itemtext"><p>NOMBRE</p><p id="nombre" class="negro itemvalue"></p></h4>
 		<h4 class="itemtext"><p>TELEFONO</p><p id="telefono" class="negro itemvalue"></p></h4>	
+</h2>
+<h2 id="comentariosContainer"><p id="conteo">COMENTARIOS</p>	
+	<div id="comentarios">
+		<hr>
+	</div>
 </h2>
 </div>
 
