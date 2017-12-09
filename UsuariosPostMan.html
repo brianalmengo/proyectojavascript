@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>POSTMAN</title>
+<script src="resources/scripts/jquery-3.2.1.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/propios.css">
+
+<script>
+
+
+$(document).ready(function(){
+	
+	obtenerDatos();
+
+});
+
+function obtenerDatos(){
+	var diccionario = window.localStorage;
+	var usuario=0;
+	var dbUsuario = diccionario.getItem("usuario");
+	if (dbUsuario != null){
+		usuario = JSON.parse(dbUsuario);
+	}
+	
+	$.ajax({
+		url: root + '/users/'+usuario,
+		method: 'GET'
+	}).then(function(data) {
+		$("#id").text(data.id);
+		$("#nombre").text(data.name);
+		$("#username").text(data.username);
+		$("#email").text(data.email);
+		$("#calle").text(data.address.street);
+		$("#casa").text(data.address.suite);
+		$("#ciudad").text(data.address.city);
+		$("#telefono").text(data.phone);
+		$("#web").text(data.website);
+		$("#codcia").text(data.company.name);
+	});
+		
+};
+
+var root = 'https://jsonplaceholder.typicode.com';
+
+</script>
+
+</head>
+
+<body>
+<center id="contenido">
+
+<h1><b>ITLA</b>
+<br>PROYECTO FINAL
+</h1>
+<hr>
+
+<b><p><h1>DATOS DEL USUARIO</h1></p></b>
+</center>
+
+<h2 class="itemtext"><p>ID</p><p id="id" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>NOMBRE</p><p id="nombre" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>USERNAME</p><p id="username" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>EMAIL</p><p id="email" class="negro itemvalue"></p></h2>
+<div class=" itemtext">
+<h2 ><p>DIRECCION</p>	
+		<h4 class="itemtext"><p>CALLE</p><p id="calle" class="negro itemvalue"></p></h4>
+		<h4 class="itemtext"><p>CASA</p><p id="casa" class="negro itemvalue"></p></h4>
+		<h4 class="itemtext"><p>CIUDAD</p><p id="ciudad" class="negro itemvalue"></p></h4>	
+</h2>
+</div>
+<h2 class="itemtext"><p>TELEFONO</p><p id="telefono" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>WEB</p><p id="web" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>COMPANIA</p><p id="codcia" class="negro itemvalue"></p></h2>
+
+
+</body>
+</html>

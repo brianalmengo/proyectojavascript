@@ -1,0 +1,203 @@
+<html>
+<head>
+<title>POSTMAN</title>
+<script src="resources/scripts/jquery-3.2.1.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/propios.css">
+
+<script>
+
+
+$(document).ready(function(){
+	
+	obtenerPosts();
+
+});
+
+function guardaUsuario(id){
+	var diccionario = window.localStorage;
+	var usuario=0;
+	
+	var dbUsuario = diccionario.getItem("usuario");
+	if (dbUsuario != null){
+		usuario = JSON.parse(dbUsuario);
+	}
+	usuario = id;
+	
+	diccionario.setItem("usuario",JSON.stringify(usuario));
+};
+
+function seleccionaUsuario(){
+	event.preventDefault();
+	var obj = event.currentTarget;
+	var id = obj.id;
+	id = id.split("userlink")[1];
+	guardaUsuario(id);
+	window.location="UsuariosPostMan.html";
+};
+
+function guardaPost(id){
+	var diccionario = window.localStorage;
+	var post=0;
+	
+	var dbPost = diccionario.getItem("post");
+	if (dbPost != null){
+		post = JSON.parse(dbPost);
+	}
+	post = id;
+	
+	diccionario.setItem("post",JSON.stringify(post));
+};
+
+function seleccionaPost(){
+	event.preventDefault();
+	var obj = event.currentTarget;
+	var id = obj.id;
+	id = id.split("postlink")[1];
+	guardaPost(id);
+	window.location="PostPage.html";
+};
+
+function seleccionarFavorita(){
+	
+	var obj = event.currentTarget;
+	var id = obj.id;
+	var claseActual = "noseleccionado" // $("#"+text).attr("class");
+	var element =document.getElementById(id);
+	console.log(element);
+	var contieneClase = element.classList.contains(claseActual);
+	id = id.split("starPost")[1];
+	
+	if(contieneClase){
+		element.classList.remove(claseActual);
+		element.classList.add("seleccionado");
+		agregaFavorito(id);
+	}else{
+		element.classList.remove("seleccionado");
+		element.classList.add(claseActual);
+		removerFavorito(id);
+	}		
+	
+};
+
+function agregaFavorito(id){
+	var diccionario = window.localStorage;
+	var favoritos = {};
+	
+	var dbFavoritos = diccionario.getItem("favoritos");
+	if (dbFavoritos != null){
+		favoritos = JSON.parse(dbFavoritos);
+	}
+	favoritos[id]=id;
+	
+	diccionario.setItem("favoritos",JSON.stringify(favoritos));
+};
+
+function esFavorito(id){
+	var diccionario = window.localStorage;
+	var favoritos = {};
+	
+	var dbFavoritos = diccionario.getItem("favoritos");
+	if (dbFavoritos != null){
+		favoritos = JSON.parse(dbFavoritos);
+	}
+	
+	return (id in favoritos);
+};
+
+function removerFavorito(id){
+	var diccionario = window.localStorage;
+	var favoritos = {};
+	
+	var dbFavoritos = diccionario.getItem("favoritos");
+	if (dbFavoritos != null){
+		favoritos = JSON.parse(dbFavoritos);
+	}
+	delete favoritos[id];
+	//favoritos.push(id);
+	diccionario.setItem("favoritos",JSON.stringify(favoritos));
+};
+
+var Post = function(){
+	var self = this;
+	self.userId;
+	self.id;
+	self.title;
+	self.body;
+};
+
+function obtenerPosts(){
+	var usuarios={};
+	
+	$.ajax({
+		url: root + '/users/',
+		method: 'GET'
+	}).then(function(listaUsuarios) {
+		$.each(listaUsuarios, function(i, usuario){
+			usuarios[usuario.id]=usuario;
+		});
+		
+		var posts;
+		$.ajax({
+			url: root + '/posts/',
+			method: 'GET'
+		}).then(function(lista) {
+			posts=lista;
+			var cantidad = 2;
+		
+			$.each(lista, function(i, data){
+				var idPost = data.id;
+				console.log(idPost);			
+			
+				var postNuevo = " <div id=\"post"+idPost+"\" class=\"container-post negro leftText\"> "+
+					" <div class=\"headerPost\"><input id=\"starPost"+idPost+"\" onclick=\"seleccionarFavorita()\" type=\"button\" class=\"noseleccionado\ headeritem favoritos\"/><a id=\"postlink"+idPost+"\" href=\"#\" onclick=\"seleccionaPost()\"><h2 class=\"headeritem\" id=\"titulo"+idPost+"\"></h2></a></div> "+
+					" <b><p id=\"body"+idPost+"\" class=\"bodyPost\"></p></b> "+ 
+					" <div class=\"footerPost\"><a id=\"userlink"+data.userId+"\" href=\"#\" onclick=\"seleccionaUsuario()\"><p style=\"float:right; padding-right: 20px;\" id=\"userName"+idPost+"\"></p></a></div>"+
+					" </div> ";
+			
+				$("#publicaciones").append(postNuevo);
+				$("#titulo"+idPost).text(data.title);
+				$("#body"+idPost).text(data.body);
+				$("#postNumber"+idPost).text("Post #:"+data.id);
+				$("#post"+idPost).css({"border-top":"1px solid #337ab7", "border-bottom":"1px solid #337ab7"});
+				$("#userName"+idPost).text(usuarios[data.userId].name+" ("+usuarios[data.userId].email+")");
+				
+				if (esFavorito(idPost)){
+					var element = document.getElementById("starPost"+idPost);
+					element.classList.remove("noseleccionado");
+					element.classList.add("seleccionado");				
+				}
+	
+			});					
+		
+		});	
+	});
+		
+};
+
+var root = 'https://jsonplaceholder.typicode.com';
+
+</script>
+
+</head>
+
+<body>
+<center id="contenido">
+
+<h1><b>ITLA</b>
+<br>PROYECTO FINAL
+</h1>
+<hr>
+
+<b><p><h1>POSTS</h1></p></b>
+
+<div id="publicaciones">
+
+
+
+</div>
+
+</center>
+</body>
+</html>

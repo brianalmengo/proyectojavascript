@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>POSTMAN</title>
+<script src="resources/scripts/jquery-3.2.1.min.js"></script>
+
+<link rel="stylesheet" href="resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/propios.css">
+
+<script>
+
+
+$(document).ready(function(){
+	
+	obtenerDatos();
+
+});
+
+function obtenerDatos(){
+	var diccionario = window.localStorage;
+	var post=0;
+	var dbPost = diccionario.getItem("post");
+	if (dbPost != null){
+		post = JSON.parse(dbPost);
+	}
+	
+	$.ajax({
+		url: root + '/posts/'+post,
+		method: 'GET'
+	}).then(function(data) {
+		$("#id").text(data.id);
+		$("#titulo").text(data.title);
+		$("#body").text(data.body);
+		$("#userId").text(data.userId);
+		
+		$.ajax({
+		url: root + '/users/'+data.userId,
+		method: 'GET'
+		}).then(function(dataUser) {
+			$("#nombre").text(dataUser.name);
+			$("#telefono").text(dataUser.phone);
+		});		
+		
+	});
+		
+};
+
+var root = 'https://jsonplaceholder.typicode.com';
+
+</script>
+
+</head>
+
+<body>
+<center id="contenido">
+
+<h1><b>ITLA</b>
+<br>PROYECTO FINAL
+</h1>
+<hr>
+
+<b><p><h1>DATOS DEL POST</h1></p></b>
+</center>
+
+<h2 class="itemtext"><p>ID</p><p id="id" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>TITULO</p><p id="titulo" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>CONTENIDO</p><p id="body" class="negro itemvalue"></p></h2>
+<div class=" itemtext">
+<h2 ><p>USUARIO</p>	
+		<h4 class="itemtext"><p>ID</p><p id="userId" class="negro itemvalue"></p></h4>
+		<h4 class="itemtext"><p>NOMBRE</p><p id="nombre" class="negro itemvalue"></p></h4>
+		<h4 class="itemtext"><p>TELEFONO</p><p id="telefono" class="negro itemvalue"></p></h4>	
+</h2>
+</div>
+
+</body>
+</html>
