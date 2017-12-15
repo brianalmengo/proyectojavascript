@@ -37,6 +37,19 @@ function obtenerDatos(){
 		$("#telefono").text(data.phone);
 		$("#web").text(data.website);
 		$("#codcia").text(data.company.name);
+		
+		$.ajax({
+			url: root + '/posts/',
+			method: 'GET'
+		}).then(function(publicaciones) {
+			var cantidad = 0;
+			$.each(publicaciones, function(index, publicacion){				
+				if(publicacion.userId==usuario){
+					cantidad += 1;
+				}				
+			});
+			$("#publicaciones").text(cantidad);
+		});
 	});
 		
 };
@@ -72,6 +85,7 @@ var root = 'https://jsonplaceholder.typicode.com';
 <h2 class="itemtext"><p>TELEFONO</p><p id="telefono" class="negro itemvalue"></p></h2>
 <h2 class="itemtext"><p>WEB</p><p id="web" class="negro itemvalue"></p></h2>
 <h2 class="itemtext"><p>COMPANIA</p><p id="codcia" class="negro itemvalue"></p></h2>
+<h2 class="itemtext"><p>PUBLICACIONES</p><p id="publicaciones" class="negro itemvalue"></p></h2>
 
 
 </body>
